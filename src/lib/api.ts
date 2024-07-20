@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { FIRST_PAGE, MAX_PAGE } from "./const";
 
-const API_URL = "https://qiita.com/api/v2";
+const API_URL = import.meta.env.VITE_QIITA_API_URL;
 const ACCESS_TOKEN = import.meta.env.VITE_QIITA_API_TOKEN;
 
 export const searchQiitaItems = async (query: string) => {

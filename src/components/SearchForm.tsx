@@ -1,51 +1,53 @@
+/* eslint-disable no-irregular-whitespace */
 import { useState } from "react";
 
-export function SearchForm() {
+// キーワードの正規化関数
+const normalizeString = (keywords: string) => {
+  return keywords
+    .replace(/，/g, " ")
+    .replace(/,/g, " ")
+    .replace(/、/g, " ")
+    .replace(/　/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+// 検索フォームコンポーネント
+export function SearchForm({
+  getItemsByQuery,
+}: {
+  getItemsByQuery: (query: string) => void;
+}) {
   const [keyword, setKeyword] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState("");
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-      setTags([...tags, e.currentTarget.value.trim()]);
-      e.currentTarget.value = "";
-      e.preventDefault();
-    }
-  };
-
-  const handleRemoveTag = (index: number) => {
-    setTags(tags.filter((_, i) => i !== index));
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const normalizedKeyword = normalizeString(keyword);
+    const normalizedTags = normalizeString(tags);
+    const query = `${normalizedKeyword} ${normalizedTags
+      .split(" ")
+      .map((tag) => `tag:${tag}`)
+      .join(" ")} stocks:>100`;
+    getItemsByQuery(query);
   };
 
   return (
-    <form className="mt-4">
+    <form onSubmit={handleSubmit} className="mb-4">
       <input
         type="text"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Keyword"
+        placeholder="Keyword (space-separated)"
         className="p-2 border border-gray-300 rounded mb-2 w-full"
       />
-      <div className="mb-2">
-        <input
-          type="text"
-          onKeyDown={handleKeyDown}
-          placeholder="Add a tag and press Enter"
-          className="p-2 border border-gray-300 rounded mb-2 w-full"
-        />
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm flex items-center"
-            >
-              {tag}
-              <button onClick={() => handleRemoveTag(index)} className="ml-2">
-                x
-              </button>
-            </span>
-          ))}
-        </div>
-      </div>
+      <input
+        type="text"
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+        placeholder="Tags (space-separated)"
+        className="p-2 border border-gray-300 rounded mb-2 w-full"
+      />
       <button
         type="submit"
         className="p-2 bg-blue-600 text-white rounded w-full"
