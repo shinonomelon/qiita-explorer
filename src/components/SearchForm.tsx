@@ -20,6 +20,7 @@ export function SearchForm({
 }) {
   const [keyword, setKeyword] = useState("");
   const [tags, setTags] = useState("");
+  const [stocksCount, setStocksCount] = useState(100);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ export function SearchForm({
     const query = `${normalizedKeyword} ${normalizedTags
       .split(" ")
       .map((tag) => `tag:${tag}`)
-      .join(" ")} stocks:>100`;
+      .join(" ")} stocks:>${stocksCount}`;
     getItemsByQuery(query);
   };
 
@@ -48,6 +49,26 @@ export function SearchForm({
         placeholder="Tags (space-separated)"
         className="p-2 border border-gray-300 rounded mb-2 w-full"
       />
+      <div className="mb-2">
+        <label htmlFor="stocksCount" className="block mb-1 font-semibold">
+          Stocks Count
+        </label>
+        <select
+          name="stocksCount"
+          value={stocksCount}
+          onChange={(e) => setStocksCount(Number(e.target.value))}
+          id="stocksCount"
+          className="p-2 border border-gray-300 rounded w-full"
+        >
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+      </div>
       <button
         type="submit"
         className="p-2 bg-blue-600 text-white rounded w-full"
