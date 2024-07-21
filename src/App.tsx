@@ -1,5 +1,6 @@
 import { ArticleList } from "./components/ArticleList";
 import { Header } from "./components/Header";
+import { Loader } from "./components/Loader";
 import { SearchForm } from "./components/SearchForm";
 
 import { useQiitaSearch } from "./hooks/useQiitaSearch";
@@ -13,7 +14,7 @@ export default function App() {
       <Header />
       <SearchForm getItemsByQuery={getItemsByQuery} />
       {!loading && <p>{items.length} results</p>}
-      {loading && <p>Loading...</p>}
+      {loading && <Loader />}
       {error && <p>{error}</p>}
       {!loading && items.length > 0 && <ArticleList items={items} />}
     </div>
