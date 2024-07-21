@@ -1,37 +1,51 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { convertCreatedAtRange, normalizeString } from "../lib/utils";
 import { createdAtRange } from "../types";
+import { useLocation } from "react-router-dom";
+import { useSearchForm } from "../hooks/useSearchForm";
 
 export function SearchForm({
   getItemsByQuery,
 }: {
   getItemsByQuery: (query: string) => void;
 }) {
-  const [keyword, setKeyword] = useState("");
-  const [tags, setTags] = useState("");
-  const [stocksCount, setStocksCount] = useState(100);
-  const [createdAtRange, setCreatedAtRange] = useState<createdAtRange>("1y");
+  const {
+    keyword,
+    tags,
+    stocksCount,
+    createdAtRange,
+    setKeyword,
+    setTags,
+    setStocksCount,
+    setCreatedAtRange,
+    updateQuery,
+    handleSubmit,
+  } = useSearchForm(getItemsByQuery);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
-    if (!(keyword || tags)) {
-      alert("Please enter keyword or tags");
-      return;
+  useEffect(() => {
+    // URLからquery取得
+    const query = queryParams.get("query") || "";
+
+    if (query) {
+      // queryを更新 (stateを更新)
+      updateQuery(query);
+
+      const normalizedKeyword = normalizeString(keyword);
+      const normalizedTags = normalizeString(tags);
+      const createdAt = convertCreatedAtRange(createdAtRange);
+
+      getItemsByQuery(
+        `${normalizedKeyword} ${normalizedTags
+          .split(" ")
+          .map((tag) => `tag:${tag}`)
+          .join(" ")} stocks:>=${stocksCount} created:>=${createdAt}`
+      );
     }
-
-    const normalizedKeyword = normalizeString(keyword);
-    const normalizedTags = normalizeString(tags);
-    const createdAt = convertCreatedAtRange(createdAtRange);
-
-    const query = `${normalizedKeyword} ${normalizedTags
-      .split(" ")
-      .map((tag) => `tag:${tag}`)
-      .join(" ")} stocks:>${stocksCount} created:>${createdAt}`;
-
-    getItemsByQuery(query);
-  };
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="my-4">
