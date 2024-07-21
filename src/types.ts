@@ -16,3 +16,5 @@ export type QiitaItem = {
   tags: QiitaTag[];
   user: QiitaUser;
 };
+
+export type createdAtRange = "1w" | "1m" | "1y" | "5y" | "10y" | "all";
