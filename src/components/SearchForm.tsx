@@ -16,6 +16,11 @@ export function SearchForm({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!(keyword || tags)) {
+      alert("Please enter keyword or tags");
+      return;
+    }
+
     const normalizedKeyword = normalizeString(keyword);
     const normalizedTags = normalizeString(tags);
     const createdAt = convertCreatedAtRange(createdAtRange);
