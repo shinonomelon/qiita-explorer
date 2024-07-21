@@ -1,11 +1,21 @@
-# React，TypeScript，Vite で Qiita の記事検索アプリ
+# Qiita Explorer
 
-## 機能要件を書いていく
+簡単に Qiita の記事をフィルタリング検索ができるアプリ
 
-- Qiita API で検索
-- ストック数，作成日でフィルタリング
+公開 URL: https://qiita-explorer.vercel.app/
 
-# 技術スタック
+## 使用技術
+
+- TypeScript
 - React
-- Vite
-- TailwindCSS
+- React Router
+
+## 機能：
+
+- 検索機能：ユーザーが特定のキーワードで Qiita の記事を検索
+- フィルタリング機能：投稿期間、タグ、ストック数などの条件で記事をフィルタリング
+- クエリ保持機能：React Router を使ってクエリを管理し、フォームの状態を URL のクエリパラメータとして保存することで、ページをリロードしてもフォームの状態が保持
+
+## 追加予定の機能
+
+- 無限スクロール
