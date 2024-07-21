@@ -10,7 +10,7 @@ export default function App() {
   const { items, loading, error, getItemsByQuery } = useQiitaSearch();
 
   return (
-    <div className="max-w-xl mx-auto pt-8">
+    <div className="max-w-xl mx-auto pt-8 px-4 md:px-0">
       <Header />
       <SearchForm getItemsByQuery={getItemsByQuery} />
       {!loading && <p>{items.length} results</p>}
