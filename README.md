@@ -7,4 +7,5 @@
 
 # 技術スタック
 - React
+- Vite
 - TailwindCSS
