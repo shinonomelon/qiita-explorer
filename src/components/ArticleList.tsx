@@ -14,6 +14,7 @@ export function ArticleList() {
 
   return (
     <div>
+      <p>{items.length} results</p>
       {status === "success" && items.length > 0 && (
         <div className="flex flex-col gap-6 py-4">
           {items.map((article) => (
