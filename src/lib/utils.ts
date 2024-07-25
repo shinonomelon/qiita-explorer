@@ -1,5 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
-import { createdAtRange } from "../types";
+import { CreatedAtRange } from "../types";
 
 // 文字列を正規化する関数
 export const normalizeString = (keywords: string) => {
@@ -13,7 +13,7 @@ export const normalizeString = (keywords: string) => {
 };
 
 // createdAtRangeを(year-month-date)に変換する関数
-export const convertCreatedAtRange = (createdAtRange: createdAtRange) => {
+export const convertCreatedAtRange = (createdAtRange: CreatedAtRange) => {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1;

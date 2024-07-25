@@ -1,36 +1,16 @@
 import { useState } from "react";
-import { createdAtRange } from "../types";
-import { convertCreatedAtRange, normalizeString } from "../lib/utils";
 import { useNavigate } from "react-router-dom";
 
-export const useSearchForm = (getItemsByQuery: (query: string) => void) => {
+import { convertCreatedAtRange, normalizeString } from "../lib/utils";
+import { CreatedAtRange } from "../types";
+
+export const useSearchForm = () => {
   const [keyword, setKeyword] = useState("");
   const [tags, setTags] = useState("");
   const [stocksCount, setStocksCount] = useState(100);
-  const [createdAtRange, setCreatedAtRange] = useState<createdAtRange>("1y");
+  const [createdAtRange, setCreatedAtRange] = useState<CreatedAtRange>("1w");
 
   const navigate = useNavigate();
-
-  const updateQuery = (query: string) => {
-    const parts = query.split(" ");
-    const keywordPart = parts[0];
-    const tagsPart = parts
-      .filter((part) => part.startsWith("tag:"))
-      .map((part) => part.split(":")[1])
-      .join(" ");
-    const stocksCountPart = parts
-      .find((part) => part.startsWith("stocks:>="))
-      ?.split(":>=")[1];
-    const createdAtRangePart = parts
-      .find((part) => part.startsWith("created:>="))
-      ?.split(":>=")[1];
-
-    if (createdAtRangePart)
-      setCreatedAtRange(createdAtRangePart as createdAtRange);
-    if (keywordPart) setKeyword(keywordPart);
-    if (tagsPart) setTags(tagsPart);
-    if (stocksCountPart) setStocksCount(Number(stocksCountPart));
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,16 +26,15 @@ export const useSearchForm = (getItemsByQuery: (query: string) => void) => {
       .map((tag) => `tag:${tag}`)
       .join(" ");
 
-    const query = `${normalizedKeyword} ${normalizedTags} stocks:>=${stocksCount} `;
+    const query = `${normalizedKeyword} ${normalizedTags} stocks:>=${stocksCount} created:>${convertCreatedAtRange(
+      createdAtRange
+    )}`;
 
     const searchParams = new URLSearchParams({
-      query: `${query} created:>=${createdAtRange}`,
+      query,
     });
-    navigate(`/?${searchParams.toString()}`);
 
-    getItemsByQuery(
-      `${query} created:>=${convertCreatedAtRange(createdAtRange)}`
-    );
+    navigate(`/?${searchParams.toString()}`);
   };
 
   return {
@@ -67,7 +46,6 @@ export const useSearchForm = (getItemsByQuery: (query: string) => void) => {
     setTags,
     setStocksCount,
     setCreatedAtRange,
-    updateQuery,
     handleSubmit,
   };
 };
