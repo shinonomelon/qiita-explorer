@@ -8,6 +8,7 @@ import { convertCreatedAtRange, parseQuery } from "../lib/utils";
 export const useFetchItems = (): {
   items: QiitaItem[];
   status: "pending" | "success" | "error";
+  isLoading: boolean;
   error: any;
 } => {
   const location = useLocation();
@@ -15,7 +16,6 @@ export const useFetchItems = (): {
 
   const page = Number(queryParams.get("page")) || 1;
 
-  // URLからquery取得
   const query = queryParams.get("query") || "";
 
   const { keyword, tags, stocksCount, createdAtRange } = parseQuery(query);
@@ -28,6 +28,7 @@ export const useFetchItems = (): {
     status,
     data: items,
     error,
+    isLoading,
   } = useQuery({
     queryKey: ["items", { query, page }],
     queryFn: async () => {
@@ -37,5 +38,5 @@ export const useFetchItems = (): {
     enabled: !!query,
   });
 
-  return { status, items, error };
+  return { status, isLoading, items, error };
 };

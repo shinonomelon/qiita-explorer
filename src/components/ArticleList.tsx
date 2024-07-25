@@ -3,15 +3,19 @@ import { useSearchForm } from "../hooks/useSearchForm";
 import { Loader } from "./Loader";
 
 export function ArticleList() {
-  const { items, status, error } = useFetchItems();
+  const { items, status, error, isLoading } = useFetchItems();
   const { page, handleClickPrevious, handleClickNext } = useSearchForm();
 
-  if (status === "pending") {
+  if (isLoading) {
     return <Loader />;
   }
 
   if (error) {
     return <p>Error: {error.message}</p>;
+  }
+
+  if (status === "pending" && !items) {
+    return null;
   }
 
   return (
