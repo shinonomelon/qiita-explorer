@@ -17,4 +17,4 @@ export type QiitaItem = {
   user: QiitaUser;
 };
 
-export type createdAtRange = "1w" | "1m" | "1y" | "5y" | "10y" | "all";
+export type CreatedAtRange = "1w" | "1m" | "1y" | "5y" | "10y" | "all";
