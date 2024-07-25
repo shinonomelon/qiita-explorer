@@ -1,15 +1,7 @@
-import { useEffect } from "react";
-
-import { convertCreatedAtRange, normalizeString } from "../lib/utils";
-import { createdAtRange } from "../types";
-import { useLocation } from "react-router-dom";
 import { useSearchForm } from "../hooks/useSearchForm";
+import { CreatedAtRange } from "../types";
 
-export function SearchForm({
-  getItemsByQuery,
-}: {
-  getItemsByQuery: (query: string) => void;
-}) {
+export function SearchForm() {
   const {
     keyword,
     tags,
@@ -19,33 +11,8 @@ export function SearchForm({
     setTags,
     setStocksCount,
     setCreatedAtRange,
-    updateQuery,
     handleSubmit,
-  } = useSearchForm(getItemsByQuery);
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  useEffect(() => {
-    // URLからquery取得
-    const query = queryParams.get("query") || "";
-
-    if (query) {
-      // queryを更新 (stateを更新)
-      updateQuery(query);
-
-      const normalizedKeyword = normalizeString(keyword);
-      const normalizedTags = normalizeString(tags);
-      const createdAt = convertCreatedAtRange(createdAtRange);
-
-      getItemsByQuery(
-        `${normalizedKeyword} ${normalizedTags
-          .split(" ")
-          .map((tag) => `tag:${tag}`)
-          .join(" ")} stocks:>=${stocksCount} created:>=${createdAt}`
-      );
-    }
-  }, []);
+  } = useSearchForm();
 
   return (
     <form onSubmit={handleSubmit} className="my-4">
@@ -98,7 +65,7 @@ export function SearchForm({
         name="createdAtRange"
         id="createdAtRange"
         value={createdAtRange}
-        onChange={(e) => setCreatedAtRange(e.target.value as createdAtRange)}
+        onChange={(e) => setCreatedAtRange(e.target.value as CreatedAtRange)}
         className="p-2 border border-gray-300 rounded mb-4 w-full"
       >
         <option value="1w">Week</option>
