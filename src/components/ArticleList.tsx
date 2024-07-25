@@ -1,8 +1,10 @@
 import { useFetchItems } from "../hooks/useFetchItems";
+import { useSearchForm } from "../hooks/useSearchForm";
 import { Loader } from "./Loader";
 
 export function ArticleList() {
   const { items, status, error } = useFetchItems();
+  const { page, handleClickPrevious, handleClickNext } = useSearchForm();
 
   if (status === "pending") {
     return <Loader />;
@@ -13,7 +15,7 @@ export function ArticleList() {
   }
 
   return (
-    <div>
+    <div className="mb-8">
       <p>{items.length} results</p>
       {status === "success" && items.length > 0 && (
         <div className="flex flex-col gap-6 py-4">
@@ -54,6 +56,23 @@ export function ArticleList() {
           ))}
         </div>
       )}
+      <div className=" grid auto-cols-fr grid-flow-col gap-4 w-fit mt-4 mx-auto">
+        <button
+          onClick={handleClickPrevious}
+          disabled={page === "1"}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Previous
+        </button>
+        <span className="px-4 py-2 text-center">{page}</span>
+        <button
+          onClick={handleClickNext}
+          disabled={items.length < 10}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

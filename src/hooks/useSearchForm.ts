@@ -9,14 +9,15 @@ export const useSearchForm = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
+  const query = queryParams.get("query") || "";
+  const page = queryParams.get("page") || "1";
+
   const [keyword, setKeyword] = useState("");
   const [tags, setTags] = useState("");
   const [stocksCount, setStocksCount] = useState(100);
   const [createdAtRange, setCreatedAtRange] = useState<CreatedAtRange>("1y");
 
   useEffect(() => {
-    const query = queryParams.get("query") || "";
-
     const { keyword, tags, stocksCount, createdAtRange } = parseQuery(query);
 
     setKeyword(keyword);
@@ -43,8 +44,25 @@ export const useSearchForm = () => {
 
     const searchParams = new URLSearchParams({
       query,
+      page,
     });
 
+    navigate(`/?${searchParams.toString()}`);
+  };
+
+  const handleClickPrevious = () => {
+    const page = queryParams.get("page") || "1";
+
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", String(Number(page) - 1));
+    navigate(`/?${searchParams.toString()}`);
+  };
+
+  const handleClickNext = () => {
+    const page = queryParams.get("page") || "1";
+
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", String(Number(page) + 1));
     navigate(`/?${searchParams.toString()}`);
   };
 
@@ -53,10 +71,13 @@ export const useSearchForm = () => {
     tags,
     stocksCount,
     createdAtRange,
+    page,
     setKeyword,
     setTags,
     setStocksCount,
     setCreatedAtRange,
     handleSubmit,
+    handleClickPrevious,
+    handleClickNext,
   };
 };

@@ -13,6 +13,8 @@ export const useFetchItems = (): {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
+  const page = Number(queryParams.get("page")) || 1;
+
   // URLからquery取得
   const query = queryParams.get("query") || "";
 
@@ -27,9 +29,9 @@ export const useFetchItems = (): {
     data: items,
     error,
   } = useQuery({
-    queryKey: ["items", { query }],
+    queryKey: ["items", { query, page }],
     queryFn: async () => {
-      const data = await searchQiitaItems(updatedQuery);
+      const data = await searchQiitaItems({ query: updatedQuery, page });
       return data;
     },
     enabled: !!query,
