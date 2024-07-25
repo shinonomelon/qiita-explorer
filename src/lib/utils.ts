@@ -20,9 +20,9 @@ export const convertCreatedAtRange = (createdAtRange: CreatedAtRange) => {
   const date = now.getDate();
 
   switch (createdAtRange) {
-    case "1w":
+    case "7d":
       return `${year}-${month}-${date - 7}`;
-    case "1m":
+    case "1M":
       return `${year}-${month - 1}-${date}`;
     case "1y":
       return `${year - 1}-${month}-${date}`;
@@ -33,4 +33,22 @@ export const convertCreatedAtRange = (createdAtRange: CreatedAtRange) => {
     case "all":
       return "2011-01-01";
   }
+};
+
+export const parseQuery = (query: string) => {
+  const parts = query.split(" ");
+
+  const keyword = parts[0];
+  const tags = parts
+    .filter((part) => part.startsWith("tag:"))
+    .map((part) => part.split(":")[1])
+    .join(" ");
+  const stocksCount = parts
+    .find((part) => part.startsWith("stocks:>="))
+    ?.split(":>=")[1];
+  const createdAtRange = parts
+    .find((part) => part.startsWith("created:>="))
+    ?.split(":>=")[1];
+
+  return { keyword, tags, stocksCount, createdAtRange };
 };

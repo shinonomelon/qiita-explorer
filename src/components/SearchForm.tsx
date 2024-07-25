@@ -68,8 +68,8 @@ export function SearchForm() {
         onChange={(e) => setCreatedAtRange(e.target.value as CreatedAtRange)}
         className="p-2 border border-gray-300 rounded mb-4 w-full"
       >
-        <option value="1w">Week</option>
-        <option value="1m">Month</option>
+        <option value="7d">Week</option>
+        <option value="1M">Month</option>
         <option value="1y">Year</option>
         <option value="5y">5 Year</option>
         <option value="10y">10 Year</option>
