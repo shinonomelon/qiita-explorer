@@ -44,7 +44,7 @@ export const useSearchForm = () => {
 
     const searchParams = new URLSearchParams({
       query,
-      page,
+      page: "1",
     });
 
     navigate(`/?${searchParams.toString()}`);
