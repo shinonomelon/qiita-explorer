@@ -64,7 +64,7 @@ export function ArticleList() {
         <button
           onClick={handleClickPrevious}
           disabled={page === "1"}
-          className="px-4 py-2 bg-gray-200 rounded"
+          className="px-4 py-2 bg-gray-200 rounded enabled:hover:bg-gray-300 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -72,7 +72,7 @@ export function ArticleList() {
         <button
           onClick={handleClickNext}
           disabled={items.length < 10}
-          className="px-4 py-2 bg-gray-200 rounded"
+          className="px-4 py-2 bg-gray-200 rounded enabled:hover:bg-gray-300 disabled:cursor-not-allowed"
         >
           Next
         </button>

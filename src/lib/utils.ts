@@ -38,17 +38,24 @@ export const convertCreatedAtRange = (createdAtRange: CreatedAtRange) => {
 export const parseQuery = (query: string) => {
   const parts = query.split(" ");
 
-  const keyword = parts[0];
-  const tags = parts
-    .filter((part) => part.startsWith("tag:"))
-    .map((part) => part.split(":")[1])
-    .join(" ");
-  const stocksCount = parts
-    .find((part) => part.startsWith("stocks:>="))
-    ?.split(":>=")[1];
-  const createdAtRange = parts
-    .find((part) => part.startsWith("created:>="))
-    ?.split(":>=")[1];
+  let keywords: string[] = [];
+  let tags = "";
+  let stocksCount = "";
+  let createdAtRange = "";
+
+  parts.forEach((part) => {
+    if (part.startsWith("tag:")) {
+      tags = part.replace("tag:", "");
+    } else if (part.startsWith("stocks:")) {
+      stocksCount = part.replace("stocks:>=", "");
+    } else if (part.startsWith("created:")) {
+      createdAtRange = part.replace("created:>=", "");
+    } else {
+      keywords.push(part);
+    }
+  });
+
+  const keyword = keywords.join(" ");
 
   return { keyword, tags, stocksCount, createdAtRange };
 };

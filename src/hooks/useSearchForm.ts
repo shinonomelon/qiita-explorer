@@ -22,6 +22,7 @@ export const useSearchForm = () => {
 
     setKeyword(keyword);
     setTags(tags);
+
     if (stocksCount) setStocksCount(Number(stocksCount));
     if (createdAtRange) setCreatedAtRange(createdAtRange as CreatedAtRange);
   }, [location.search]);
@@ -55,6 +56,7 @@ export const useSearchForm = () => {
 
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", String(Number(page) - 1));
+
     navigate(`/?${searchParams.toString()}`);
   };
 
@@ -63,6 +65,7 @@ export const useSearchForm = () => {
 
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", String(Number(page) + 1));
+
     navigate(`/?${searchParams.toString()}`);
   };
 
