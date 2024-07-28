@@ -20,10 +20,13 @@ export const useFetchItems = (): {
 
   const { keyword, tags, stocksCount, createdAtRange } = parseQuery(query);
 
-  const updatedQuery = `${keyword} ${tags
-    .split(" ")
-    .map((tag) => `tag:${tag}`)
-    .join(" ")} stocks:>=${stocksCount} created:>=${convertCreatedAtRange(
+  const updatedQuery = `${keyword} ${
+    tags &&
+    tags
+      .split(" ")
+      .map((tag) => `tag:${tag}`)
+      .join(" ")
+  } stocks:>=${stocksCount} created:>=${convertCreatedAtRange(
     createdAtRange as CreatedAtRange
   )}`;
 
