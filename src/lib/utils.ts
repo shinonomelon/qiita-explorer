@@ -39,13 +39,13 @@ export const parseQuery = (query: string) => {
   const parts = query.split(" ");
 
   let keywords: string[] = [];
-  let tags = "";
+  let tagsArray: string[] = [];
   let stocksCount = "";
   let createdAtRange = "";
 
   parts.forEach((part) => {
     if (part.startsWith("tag:")) {
-      tags = part.replace("tag:", "");
+      tagsArray.push(part.replace("tag:", ""));
     } else if (part.startsWith("stocks:")) {
       stocksCount = part.replace("stocks:>=", "");
     } else if (part.startsWith("created:")) {
@@ -55,6 +55,7 @@ export const parseQuery = (query: string) => {
     }
   });
 
+  const tags = tagsArray.join(" ");
   const keyword = keywords.join(" ");
 
   return { keyword, tags, stocksCount, createdAtRange };

@@ -35,13 +35,15 @@ export const useSearchForm = () => {
       return;
     }
 
-    const normalizedKeyword = normalizeString(keyword);
-    const normalizedTags = normalizeString(tags)
-      .split(" ")
-      .map((tag) => `tag:${tag}`)
-      .join(" ");
-
-    const query = `${normalizedKeyword} ${normalizedTags} stocks:>=${stocksCount} created:>=${createdAtRange}`;
+    const normalizedKeyword = normalizeString(keyword) + " ";
+    const normalizedTags =
+      normalizeString(tags)
+        .split(" ")
+        .map((tag) => `tag:${tag}`)
+        .join(" ") + " ";
+    const query = `${keyword && normalizedKeyword}${
+      tags && normalizedTags
+    }stocks:>=${stocksCount} created:>=${createdAtRange}`;
 
     const searchParams = new URLSearchParams({
       query,
